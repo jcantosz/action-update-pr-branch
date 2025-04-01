@@ -1,0 +1,31 @@
+{
+  "name": "find-approved-pr",
+  "version": "1.0.0",
+  "description": "GitHub Action to find the first open pull request in a repository that is approved",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "ncc build index.js -o dist",
+    "prepare": "npm run build"
+  },
+  "type": "module",
+  "keywords": [
+    "github",
+    "actions",
+    "pull-request",
+    "approved"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@vercel/ncc": "^0.36.1"
+  },
+  "dependencies": {
+    "@actions/core": "^1.11.1",
+    "@octokit/auth-app": "^7.1.5",
+    "@octokit/core": "^6.1.4",
+    "@octokit/plugin-paginate-rest": "^11.6.0",
+    "@octokit/plugin-retry": "^7.2.0",
+    "@octokit/plugin-throttling": "^9.6.0",
+    "node-fetch": "^3.3.2"
+  }
+}

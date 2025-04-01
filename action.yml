@@ -1,0 +1,44 @@
+name: "Find Approved PR"
+description: "Finds the first open pull request in a repository that has been approved and updates its branch"
+inputs:
+  github_token:
+    description: "GitHub token"
+    required: false
+  github_app_id:
+    description: "GitHub App ID"
+    required: false
+  github_private_key:
+    description: "GitHub Private Key"
+    required: false
+  github_installation_id:
+    description: "GitHub Installation ID"
+    required: false
+  api_url:
+    description: "GitHub API URL"
+    required: false
+    default: "https://api.github.com"
+  repo:
+    description: "Target repository in format owner/repo"
+    required: false
+  base_branch:
+    description: "Filter PRs by base branch name (e.g., main, master)"
+    required: false
+    default: "main"
+outputs:
+  pr_number:
+    description: "The number of the first approved PR found"
+  pr_title:
+    description: "The title of the approved PR"
+  pr_url:
+    description: "The URL to the approved PR"
+  branch_name:
+    description: "The branch name of the approved PR"
+  branch_updated:
+    description: "Whether the branch was updated (true) or not (false)"
+  update_commit_sha:
+    description: "The SHA of the merge commit if branch was updated"
+  has_conflicts:
+    description: "Whether there were merge conflicts when trying to update the branch"
+runs:
+  using: "node20"
+  main: "dist/index.js"

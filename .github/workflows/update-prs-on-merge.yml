@@ -1,0 +1,29 @@
+name: Update PRs on Merge
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main # or your default branch
+
+jobs:
+  update-prs-after-merge:
+    # Only run if the PR was merged (not just closed)
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Update Approved PRs
+        uses: jcantosz/action-update-pr-branch@main
+        id: update-pr
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          repo: ${{ github.repository }}
+          base_branch: ${{ github.base_ref }} # when a PR against this ref is closed, update other prs that target the same branch
+      - name: Check Result
+        if: steps.update-pr.outputs.pr_number
+        run: |
+          echo "Updated PR #${{ steps.update-pr.outputs.pr_number }}: ${{ steps.update-pr.outputs.pr_title }}"
+          echo "#${{ pr_url }}"
