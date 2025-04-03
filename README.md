@@ -95,5 +95,5 @@ jobs:
         if: steps.update-pr.outputs.pr_number
         run: |
           echo "Updated PR #${{ steps.update-pr.outputs.pr_number }}: ${{ steps.update-pr.outputs.pr_title }}"
-          echo "#${{ pr_url }}"
+          echo "#${{ steps.update-pr.outputs.pr_url }}"
 ```
