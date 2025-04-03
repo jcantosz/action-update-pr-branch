@@ -66,6 +66,7 @@ async function getOpenPullRequests(octokit, owner, repo, baseBranch) {
     state: "open",
     sort: "created",
     direction: "asc", // Get oldest first
+    per_page: 100, // Maximize results per page
     headers: {
       "X-GitHub-Api-Version": "2022-11-28",
     },
@@ -77,7 +78,7 @@ async function getOpenPullRequests(octokit, owner, repo, baseBranch) {
     core.info(`Filtering PRs by base branch: ${baseBranch}`);
   }
 
-  const { data: pullRequests } = await octokit.request("GET /repos/{owner}/{repo}/pulls", requestParams);
+  const pullRequests = await octokit.paginate("GET /repos/{owner}/{repo}/pulls", requestParams);
   core.info(`Found ${pullRequests.length} open pull requests.`);
 
   return pullRequests;
@@ -99,10 +100,11 @@ async function getPullRequestDetails(octokit, owner, repo, pullNumber) {
 
 // Get reviews for a specific pull request
 async function getPullRequestReviews(octokit, owner, repo, pullNumber) {
-  const { data: reviews } = await octokit.request("GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews", {
+  const reviews = await octokit.paginate("GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews", {
     owner,
     repo,
     pull_number: pullNumber,
+    per_page: 100, // Maximize results per page
     headers: {
       "X-GitHub-Api-Version": "2022-11-28",
     },
